@@ -1,0 +1,82 @@
+.mission {
+    border-block: 1px solid white;
+    display: flex;
+    height: 130px;
+    padding: 0 10px;
+}
+.mission__img {
+    margin-top: 38px;
+    width: 80px;
+    height: 80px;
+    border-right: 0px;
+}
+
+.mission__title {
+    font-size: 1.2em;
+    text-align: center;
+    margin: 15px 0px;
+}
+
+.mission__target {
+    margin: 5px 0px;
+}
+
+.mission__content {
+    display: flex;
+    flex-direction: column;
+    padding: 0px 10px;
+    width: 100%;
+}
+
+.mission__reward {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: center;
+    padding: 0 10px;
+    max-width: 120px;
+    width: 100%;
+
+}
+
+.mission__reward-item--xp {
+    color: rgb(95, 223, 95);
+}
+
+.mission__reward-item--calories {
+    color: rgb(235, 126, 126);
+}
+
+.mission__controls {
+    display: flex;
+    align-items: center;
+}
+
+.mission__controls-start {
+    height: 50px;
+    width: 90px;
+    background-color: rgb(63, 172, 63);
+    transition: 0.4s;
+    &:hover {
+        opacity: 0.9;
+    }
+}
+
+.mission__controls-finish {
+    height: 50px;
+    width: 90px;
+    background-color: rgb(63, 172, 63);
+    transition: 0.4s;
+    &:hover {
+        opacity: 0.9;
+    }
+}
+
+.mission__controls-finished {
+    height: 50px;
+    width: 90px;
+    background-color: rgb(154, 158, 154);
+    &:hover {
+        cursor: auto;
+    }
+}
