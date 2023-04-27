@@ -127,3 +127,16 @@
         }
     }
 }
+
+.header__auth-btns {
+    display: flex;
+    gap: 10px;
+    a {
+        text-decoration: none;
+        color: #b9b9b9;
+        transition: .3s;
+        &:hover {
+            opacity: 0.7;
+        }
+    }
+}

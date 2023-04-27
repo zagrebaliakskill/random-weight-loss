@@ -18,7 +18,6 @@ export class AuthController {
     async login(@Request() req, @Response({ passthrough: true }) res) {
         const data = await this.authService.login(req.user);
         const { refreshToken, ...updatedData } = data
-        console.log(updatedData)
         res.cookie('refreshToken', refreshToken, { httpOnly: true, maxAge: 30 * 24 * 60 * 60 * 1000 });
         return updatedData
     }

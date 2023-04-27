@@ -4,7 +4,6 @@ import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/createUserDto';
 import { UserEntity } from './entites/user.entity';
 import * as bcrypt from 'bcrypt';
-import { MissionsService } from 'src/missions/missions.service';
 
 @Injectable()
 export class UsersService {
@@ -14,6 +13,17 @@ export class UsersService {
     ) {}
 
     async createUser(user: CreateUserDto) {
+        if (user.name.length < 3) {
+            return false;
+        }
+        if (user.password.length < 6) {
+            return false;
+        }
+        if (user.email.length && !user.email.includes("@")) {
+            return false;
+        }
+
+        
         const username = await this.findOneByUserName(user.name)
         if (username) {
             return "username already exists"
