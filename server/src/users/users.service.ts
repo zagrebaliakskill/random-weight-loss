@@ -59,12 +59,25 @@ export class UsersService {
         }
     }
 
-    async addActiveMission(userId: number, missionId: number) {
+    async addActiveMission(userId: number, missionId: number | []) {
         const user = await this.findOneByUserId(userId);
         let missions = user.missions ? JSON.parse(user.missions) : [];
-        missions.push({"missionId": missionId, "status": "active"});
-        user.missions = JSON.stringify(missions);
-        await this.userRepository.save(user);
+    
+        if (typeof missionId === 'number') {
+            if (!missions.some(mission => mission.missionId === missionId && mission.status !== 'finished')) {
+                missions.push({"missionId": missionId, "status": "active"});
+            }
+        } else {
+            for (let i = 0; i < missionId.length; i++) {
+                const mission = missionId[i];
+                if (!missions.some(existingMission => existingMission.missionId === mission && existingMission.status !== 'finished')) {
+                    missions.push({"missionId": mission, "status": "active"});
+                }
+            }
+        }
+    
+        const updatedMissions = JSON.stringify(missions);
+        await this.userRepository.update({id: user.id}, {missions: updatedMissions});
     }
 
     async setMissionFinished(userId: number, missionId: number) {

@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { UserEntity } from 'src/users/entites/user.entity';
 import { UsersService } from 'src/users/users.service';
 import { Repository } from 'typeorm';
 import { MissionEntity } from './entities/mission.entity';
@@ -9,6 +10,8 @@ export class MissionsService {
     constructor(
         @InjectRepository(MissionEntity)
         private readonly missionRepository: Repository<MissionEntity>,
+        @InjectRepository(UserEntity)
+        private readonly userRepository: Repository<UserEntity>,
         private readonly userService: UsersService  
     ){}
 
@@ -38,6 +41,22 @@ export class MissionsService {
     }
 
     async getMissions(uid) {
+        const user = await this.userService.findOneByUserId(uid)
+        const last_update_time: any = user.daily_missions_updated_in 
+        let diffInHours: number = 0
+        if (last_update_time) {
+            const current_time: any = new Date()
+            const diffInMs = current_time - last_update_time; // разница в миллисекундах
+            diffInHours = diffInMs / (1000 * 60 * 60); // разница в часах
+        }
+
+        if (diffInHours >= 24 || last_update_time == null) {
+            const update_status = await this.dailyUpdateUserMissions(uid)
+            if (update_status) {
+                this.userRepository.update({id: user.id}, {daily_missions_updated_in: new Date()})
+            }
+        }
+
         let active_missions =  await this.userService.getUserActiveMissions(uid)
         if (!active_missions) {
             return false
@@ -51,9 +70,9 @@ export class MissionsService {
         return missions
     }
 
-    async getRandomMissionIds(count: number, difficulty: number) {
+    async getRandomMissionIds(count: number, user_xp: number) {
         const allMissions = await this.missionRepository.find()
-        const filteredMissions = allMissions.filter(mission => mission.difficulty < Math.floor(difficulty/100) + 1); // 0 XP / 100 = 0 ЛВЛ, у нас старт с 1 лвла поэтому + 1
+        const filteredMissions = allMissions.filter(mission => mission.difficulty <= Math.floor(user_xp/100) + 1); // 0 XP / 100 = 0 ЛВЛ, у нас старт с 1 лвла поэтому + 1
         const missionIds = filteredMissions.map(mission => mission.id);
         const randomIds = [];
         while (randomIds.length < count && missionIds.length > 0) {
@@ -64,7 +83,7 @@ export class MissionsService {
         return randomIds;
     }
 
-    async getMissionsWithDailyUpdate(userId: number) {
+    async dailyUpdateUserMissions(userId: number) {
         const user = await this.userService.findOneByUserId(userId);
         let activeMissions = user.missions ? JSON.parse(user.missions) : [];
         activeMissions = activeMissions.filter(mission => mission.status !== "finished");
@@ -73,14 +92,19 @@ export class MissionsService {
             for (let missionId of randomMissionIds) {
                 if (!activeMissions.some(mission => mission.missionId === missionId)) {
                     activeMissions.push({missionId, status: "active"});
-                    await this.userService.addActiveMission(userId, missionId);
                 }
                 if (activeMissions.length === 5) {
+                    const newMissionsIds = activeMissions.map(mission => {
+                        if (mission.status !== "finished") {
+                            return mission.missionId
+                        }
+                    })
+                    await this.userService.addActiveMission(userId, newMissionsIds);
                     break;
                 }
             }
         }
-        return activeMissions;
+        return true;
     }
 }
 

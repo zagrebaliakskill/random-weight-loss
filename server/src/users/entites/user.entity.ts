@@ -21,6 +21,9 @@ export class UserEntity {
     xp: number;
 
     @Column({nullable: true})
+    daily_missions_updated_in: Date;
+
+    @Column({nullable: true})
     missions: string;
 
     @Column({default: 1})

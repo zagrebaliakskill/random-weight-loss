@@ -31,6 +31,6 @@ export class MissionsController {
 
     @Post('/test')
     async test1() {
-        return this.missionsService.getRandomMissionIds(1)
+        return this.missionsService.getRandomMissionIds(1, 100)
     }
 }
