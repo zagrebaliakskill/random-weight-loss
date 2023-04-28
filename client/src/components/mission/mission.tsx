@@ -60,38 +60,60 @@ function Mission(props: MissionProps) {
             setMissionStatus('finished')
         }
     }
+
+    const [missionClass, setMissionClass] = useState<string>('')
+
+    const deleteMission = async() => {
+        //const response = await axiosInstance.post('/missions/deleteMission', {"mission_id": id})
+        const response: any = {}
+        response.data = true
+        if (response.data === true) {
+            dispatch(changeXp(-20))
+            setMissionClass('mission__transform-deleted')
+            setTimeout(() => {
+                setMissionStatus("deleted")
+            }, 290)
+        }
+    }
     return (
         <>
-            <div className="mission">
-                <img src={getMissionImg(type)} alt="" className="mission__img" />
-                <div className="mission__content">
-                    <div className="mission__title">
-                        {title}
+            {missionStatus != "deleted" && 
+                <div className={`mission ${missionClass}`}>
+                    <img src={getMissionImg(type)} alt="" className="mission__img" />
+                    <div className="mission__content">
+                        <div className="mission__title">
+                            {title}
+                        </div>
+                        <div className="mission__target">
+                            Цель: {mission_target}
+                        </div>
+                        <div className="mission__description">
+                            Описание: {description}
+                        </div>
                     </div>
-                    <div className="mission__target">
-                        Цель: {mission_target}
+                    <div className="mission__reward">
+                        <div className="mission__reward-title">
+                            Награда:
+                        </div>
+                        <div className="mission__reward-item mission__reward-item--xp">
+                            {xp} XP
+                        </div>
+                        <div className="mission__reward-item mission__reward-item--calories">
+                            {balance} Калорий
+                        </div>
                     </div>
-                    <div className="mission__description">
-                        Описание: {description}
+                    <div className="mission__controls">
+                        {missionStatus === "active" && <button className='mission__controls-start' onClick={startMission}>Начать</button>} 
+                        {missionStatus === "started" &&
+                        <>
+                            <button className='mission__controls-finish' onClick={finishMission}>Завершить</button>
+                            <button className='mission__controls-delete' onClick={deleteMission}>X</button>
+                        </>
+                        }
+                        {missionStatus === "finished" && <button className='mission__controls-finished' onClick={finishMission}>Завершена</button>}
                     </div>
                 </div>
-                <div className="mission__reward">
-                    <div className="mission__reward-title">
-                        Награда:
-                    </div>
-                    <div className="mission__reward-item mission__reward-item--xp">
-                        {xp} XP
-                    </div>
-                    <div className="mission__reward-item mission__reward-item--calories">
-                        {balance} Калорий
-                    </div>
-                </div>
-                <div className="mission__controls">
-                    {missionStatus === "active" && <button className='mission__controls-start' onClick={startMission}>Начать</button>} 
-                    {missionStatus === "started" && <button className='mission__controls-finish' onClick={finishMission}>Завершить</button>}
-                    {missionStatus === "finished" && <button className='mission__controls-finished' onClick={finishMission}>Завершена</button>}
-                </div>
-            </div>
+            }
         </>
     )
 }

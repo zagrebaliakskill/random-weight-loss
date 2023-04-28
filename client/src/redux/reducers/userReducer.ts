@@ -64,7 +64,9 @@ export const login = (username: string, password: string) => async (dispatch: Ap
     try {
         const response = await AuthService.login(username, password);
         localStorage.setItem('accessToken', response.data.accessToken);
-        dispatch(loginSuccess(response.data));
+        setTimeout(() => {
+            dispatch(loginSuccess(response.data));
+        }, 5000); // TODO убрать
     } catch (error: any) {
         let errorMsg = ''
         if (error.response.data.statusCode == 401) {

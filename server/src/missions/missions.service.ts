@@ -40,6 +40,18 @@ export class MissionsService {
         return true
     }
 
+    async deleteMission(userId: number, missionId: number) {
+        const deleteMission = await this.userService.deleteMission(userId, missionId);
+        if (!deleteMission) {
+            return false
+        }
+        const { xp } = await this.userService.findOneByUserId(userId)
+        if ((xp - 20) >= 0) {
+            await this.userService.editXp(userId, -20)
+        }
+        return true
+    }
+
     async getMissions(uid) {
         const user = await this.userService.findOneByUserId(uid)
         const last_update_time: any = user.daily_missions_updated_in 

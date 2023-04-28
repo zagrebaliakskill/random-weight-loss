@@ -112,6 +112,28 @@ export class UsersService {
         return setMissionFinishedState
     }
 
+    async deleteMission(userId: number, missionId: number) {
+        const user = await this.findOneByUserId(userId)
+        let missionDeleteState = false
+        if (!user) {
+            return false
+        }
+        let missions = user.missions ? JSON.parse(user.missions) : null;
+        if (!missions) {
+            return false
+        }
+        missions = missions.filter((e) => {
+            if (e.missionId === missionId && e.status !== 'finished'){
+                missionDeleteState = true
+                return false
+            }
+            return true
+        })
+        user.missions = JSON.stringify(missions);
+        await this.userRepository.save(user);
+        return missionDeleteState
+    }
+
     async setMissionStarted(userId: number, missionId: number) {
         const user = await this.findOneByUserId(userId)
         let setMissionStartedState = false

@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 const Login = () => {
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
-    const {isLoggedIn} = useSelector((store: any) => store.user)
+    const {isLoggedIn, isAuthLoading} = useSelector((store: any) => store.user)
 
     useEffect(() => {
         if (isLoggedIn) {
@@ -35,6 +35,11 @@ const Login = () => {
             <input className="auth__form-input" type="password"onChange={(e) => setPassword(e.target.value)} placeholder="Пароль" />
             <input className="auth__form-submit" type="submit"/>
             {authErrorMsg && <p className="auth__form-error">{authErrorMsg}</p>}
+            {isAuthLoading && 
+                <div className="auth__form-loader">
+                <span className="auth__form-loader-spinner"></span>
+                </div>
+            }
         </form>
         </>
     )

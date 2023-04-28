@@ -29,6 +29,14 @@ export class MissionsController {
         return await this.missionsService.startMission(user_id, mission_id)
     }
 
+    @UseGuards(JwtGuard)
+    @Post('/deleteMission')
+    async deleteMission(@Req() req) {
+        const user_id = req.user.id;
+        const mission_id = req.body.mission_id;
+        return await this.missionsService.deleteMission(user_id, mission_id)
+    }
+
     @Post('/test')
     async test1() {
         return this.missionsService.getRandomMissionIds(1, 100)

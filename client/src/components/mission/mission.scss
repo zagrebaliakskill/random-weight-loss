@@ -1,9 +1,17 @@
 .mission {
+    position: relative;
     border-block: 1px solid white;
+    border-inline: 1px solid gray;
     display: flex;
     height: 130px;
     padding: 0 10px;
+    transition: 0.9s;
 }
+
+.mission__transform-deleted {
+    transform: translateX(-5000px);
+}
+
 .mission__img {
     margin-top: 38px;
     width: 80px;
@@ -50,6 +58,7 @@
 .mission__controls {
     display: flex;
     align-items: center;
+    justify-content: center;
 }
 
 .mission__controls-start {
@@ -64,10 +73,12 @@
 
 .mission__controls-finish {
     height: 50px;
-    width: 90px;
+    width: 78px;
     background-color: rgb(63, 172, 63);
     transition: 0.4s;
+    font-size: 12px;
     &:hover {
+        outline: 1px solid white; 
         opacity: 0.9;
     }
 }
@@ -78,5 +89,18 @@
     background-color: rgb(154, 158, 154);
     &:hover {
         cursor: auto;
+    }
+}
+
+.mission__controls-delete {
+    height: 50px;
+    width: 12px;
+    font-size: 7px;
+    background-color: #7c7c7c;
+    transition: .5s;
+    &:hover {
+        outline: 1px solid white; 
+        opacity: 0.8;
+        cursor: pointer;
     }
 }
