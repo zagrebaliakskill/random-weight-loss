@@ -52,7 +52,7 @@ function Header() {
                                 <Link to={"missions"} className="header__nav-link">Миссии</Link>
                             </li>
                             <li className="header__nav-item">
-                                <Link to={"statistic"} className="header__nav-link">Статистика</Link>
+                                <Link to={"stats"} className="header__nav-link">Статистика</Link>
                             </li>
                         </ul>
                     </nav>

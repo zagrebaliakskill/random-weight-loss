@@ -34,9 +34,15 @@ export class MissionsService {
         if (!setMissionFinished) {
             return false
         }
-        const { xp, balance} = await this.findOne(missionId)
+        const { xp, balance, type, target_value} = await this.findOne(missionId)
         await this.userService.editBalance(userId, balance)
         await this.userService.editXp(userId, xp)
+        const user = await this.userService.findOneByUserId(userId)
+        console.log(type)
+        console.log(user[`total_${type}`])
+        console.log(target_value)
+        user[`total_${type}`] = user[`total_${type}`] + target_value
+        await this.userRepository.save(user)
         return true
     }
 

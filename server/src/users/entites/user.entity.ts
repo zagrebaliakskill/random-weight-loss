@@ -28,5 +28,20 @@ export class UserEntity {
 
     @Column({default: 1})
     token_version: number;
+
+    @Column({default: 0})
+    total_steps: number;
+
+    @Column({default: 0})
+    total_push_ups: number;
+
+    @Column({default: 0})
+    total_sit_ups: number;
+
+    @Column({default: 0})
+    total_plank: number;
+
+    @Column({default: 0})
+    total_press: number;
 }
 

@@ -27,11 +27,11 @@ function Mission(props: MissionProps) {
     
     const getMissionImg = (input: string) => {
         switch (input) {
-            case "run":
+            case "steps":
                 return runImg
-            case "sit-ups":
+            case "sit_ups":
                 return sitUpImg
-            case "push-ups":
+            case "push_ups":
                 return pushUpImg
             case 'plank':
                 return plankImg

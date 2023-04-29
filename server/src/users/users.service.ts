@@ -184,4 +184,17 @@ export class UsersService {
         })
         return missions
     }
+
+    async getUserStats(userId: number) {
+        const {total_steps, total_plank, total_press,
+        total_push_ups, total_sit_ups} = await this.findOneByUserId(userId)
+        const data = {
+            total_steps,
+            total_plank, 
+            total_press,
+            total_push_ups, 
+            total_sit_ups
+        }
+        return data
+    }
 }

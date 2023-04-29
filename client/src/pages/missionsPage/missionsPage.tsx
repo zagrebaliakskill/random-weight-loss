@@ -1,6 +1,6 @@
-import Mission from '../components/mission/mission'
+import Mission from '../../components/mission/mission'
 import './missionsPage.scss'
-import axiosInstance from '../api/axiosInstance'
+import axiosInstance from '../../api/axiosInstance'
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 
